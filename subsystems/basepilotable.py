@@ -48,3 +48,9 @@ class BasePilotable(commands2.SubsystemBase):
 
     def resetGyro(self) -> None:
         self.gyro.reset()
+    
+    def getAverageEncoderDistance(self) -> float:
+        return (self.fl_motor_encoder.getDistance() + 
+            self.fr_motor_encoder.getDistance() + 
+            self.rl_motor_encoder.getDistance() + 
+            self.rr_motor_encoder.getDistance()) / 4 
