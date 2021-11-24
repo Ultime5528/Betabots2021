@@ -15,10 +15,10 @@ class BasePilotable(commands2.SubsystemBase):
     def __init__(self) -> None:
         super().__init__()
 
-        self.fl_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_fl)
-        self.fr_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_fr)
-        self.rl_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_rl)
-        self.rr_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_rr)
+        self.fl_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_fl, rev.CANSparkMaxLowLevel.MotorType.kBrushless)
+        self.fr_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_fr, rev.CANSparkMaxLowLevel.MotorType.kBrushless)
+        self.rl_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_rl, rev.CANSparkMaxLowLevel.MotorType.kBrushless)
+        self.rr_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_rr, rev.CANSparkMaxLowLevel.MotorType.kBrushless)
 
         self.fl_motor_encoder = self.fl_motor.getEncoder()
         self.fr_motor_encoder = self.fr_motor.getEncoder()
@@ -29,10 +29,10 @@ class BasePilotable(commands2.SubsystemBase):
 
         self.drive = wpilib.drive.MecanumDrive(self.fl_motor, self.fr_motor, self.rl_motor,self.rr_motor)
 
-        self.fl_motor_encoder.setDistancePerPulse(1 / self.pulses_per_meter)
-        self.fr_motor_encoder.setDistancePerPulse(1 / self.pulses_per_meter)
-        self.rl_motor_encoder.setDistancePerPulse(1 / self.pulses_per_meter)
-        self.rr_motor_encoder.setDistancePerPulse(1 / self.pulses_per_meter)
+        self.fl_motor_encoder.setPositionConversionFactor(1 / self.pulses_per_meter)
+        self.fr_motor_encoder.setPositionConversionFactor(1 / self.pulses_per_meter)
+        self.rl_motor_encoder.setPositionConversionFactor(1 / self.pulses_per_meter)
+        self.rr_motor_encoder.setPositionConversionFactor(1 / self.pulses_per_meter)
         self.resetOdometry()
 
     def driveCartesian(self, ySpeed: float, xSpeed: float, zRot: float) -> None:
@@ -42,10 +42,10 @@ class BasePilotable(commands2.SubsystemBase):
         self.drive.drivePolar(mag, angle, zRot)
 
     def resetOdometry(self) -> None:
-        self.fl_motor_encoder.reset()
-        self.fr_motor_encoder.reset()
-        self.rl_motor_encoder.reset()
-        self.rr_motor_encoder.reset()
+        self.fl_motor_encoder.setPosition(0)
+        self.fr_motor_encoder.setPosition(0)
+        self.rl_motor_encoder.setPosition(0)
+        self.rr_motor_encoder.setPosition(0)
         self.gyro.reset()
 
     
