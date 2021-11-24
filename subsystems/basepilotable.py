@@ -3,6 +3,7 @@ import math
 import commands2
 import wpilib
 import wpilib.drive
+import rev
 
 import constants
 
@@ -14,15 +15,15 @@ class BasePilotable(commands2.SubsystemBase):
     def __init__(self) -> None:
         super().__init__()
 
-        self.fl_motor = wpilib.VictorSP(constants.Ports.base_pilotable_moteur_fl)
-        self.fr_motor = wpilib.VictorSP(constants.Ports.base_pilotable_moteur_fr)
-        self.rl_motor = wpilib.VictorSP(constants.Ports.base_pilotable_moteur_rl)
-        self.rr_motor = wpilib.VictorSP(constants.Ports.base_pilotable_moteur_rr)
+        self.fl_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_fl)
+        self.fr_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_fr)
+        self.rl_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_rl)
+        self.rr_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_rr)
 
-        self.fl_motor_encoder = wpilib.Encoder(*constants.Ports.base_pilotable_encodeur_fl)
-        self.fr_motor_encoder = wpilib.Encoder(*constants.Ports.base_pilotable_encodeur_fr)
-        self.rl_motor_encoder = wpilib.Encoder(*constants.Ports.base_pilotable_encodeur_rl)
-        self.rr_motor_encoder = wpilib.Encoder(*constants.Ports.base_pilotable_encodeur_rr)
+        self.fl_motor_encoder = self.fl_motor.getEncoder()
+        self.fr_motor_encoder = self.fr_motor.getEncoder()
+        self.rl_motor_encoder = self.rl_motor.getEncoder()
+        self.rr_motor_encoder = self.rr_motor.getEncoder()
 
         self.gyro = wpilib.ADXRS450_Gyro()
 
