@@ -1,6 +1,7 @@
 import wpilib
 import commands2
 
+
 class TroisDents(commands2.SubsystemBase):
     def __init__(self):
         super().__init__()
@@ -12,12 +13,11 @@ class TroisDents(commands2.SubsystemBase):
         self.piston = wpilib.DoubleSolenoid(0, 1)
         self.addChild("Piston", self.piston)
 
-    def extensionner(self):
+    def drop(self):
         self.piston.set(wpilib.DoubleSolenoid.Value.kForward)
 
-    def retracter(self):
+    def take(self):
         self.piston.set(wpilib.DoubleSolenoid.Value.kReverse)
 
     def idle(self):
         self.piston.set(wpilib.DoubleSolenoid.Value.kOff)
-        
