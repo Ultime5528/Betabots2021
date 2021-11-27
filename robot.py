@@ -7,11 +7,14 @@ from commands.piloter import Piloter
 from commands.aller_pyramide import AllerPyramide
 
 from subsystems.basepilotable import BasePilotable
+from subsystems.troisdents import TroisDents
 
 class Robot(commands2.TimedCommandRobot):
 
     def robotInit(self):
+        wpilib.CameraServer.launch()
         self.base_pilotable = BasePilotable()
+        self.troisdents = TroisDents()
 
         self.controller = wpilib.Joystick(0)
 

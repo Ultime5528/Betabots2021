@@ -13,10 +13,7 @@ class Piloter(CommandBase):
         self.addRequirements(base_pilotable)
         self.setName("Piloter")
 
-    def initialize(self):
-        pass
-
     def execute(self):
         self.base_pilotable.driveCartesian(
-            self.controller.getX(), -self.controller.getY(), self.controller.getZ()
+            .5*self.controller.getX(), -0.5*self.controller.getY(), 0*self.controller.getZ()
         )
