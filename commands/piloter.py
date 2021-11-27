@@ -11,6 +11,7 @@ class Piloter(CommandBase):
         self.controller = controller
         self.base_pilotable = base_pilotable
         self.addRequirements(base_pilotable)
+        self.setName("Piloter")
 
     def initialize(self):
         pass

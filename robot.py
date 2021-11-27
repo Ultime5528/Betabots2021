@@ -2,9 +2,9 @@
 
 import commands2
 import wpilib
-from commands2 import CommandScheduler
 
 from commands.piloter import Piloter
+from commands.aller_pyramide import AllerPyramide
 
 from subsystems.basepilotable import BasePilotable
 
@@ -16,6 +16,15 @@ class Robot(commands2.TimedCommandRobot):
         self.controller = wpilib.Joystick(0)
 
         self.base_pilotable.setDefaultCommand(Piloter(self.base_pilotable, self.controller))
+
+        wpilib.SmartDashboard.putData("AllerPyramide", AllerPyramide(self.base_pilotable, 1))
+        wpilib.SmartDashboard.putData("Commandes/Pyramide1", AllerPyramide(self.base_pilotable, 1))
+        wpilib.SmartDashboard.putData("Commandes/Pyramide2", AllerPyramide(self.base_pilotable, 2))
+        wpilib.SmartDashboard.putData("Commandes/Pyramide3", AllerPyramide(self.base_pilotable, 3))
+        wpilib.SmartDashboard.putData("Commandes/Pyramide4", AllerPyramide(self.base_pilotable, 4))
+        wpilib.SmartDashboard.putData("Commandes/Pyramide5", AllerPyramide(self.base_pilotable, 5))
+
+        wpilib.SmartDashboard.putNumber("Proprietes/Temps Piston", 0)
 
     def autonomousInit(self):
         pass
