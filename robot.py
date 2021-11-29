@@ -9,6 +9,9 @@ from commands.aller_pyramide import AllerPyramide
 from subsystems.basepilotable import BasePilotable
 from subsystems.troisdents import TroisDents
 
+from commands2.button import JoystickButton
+
+
 class Robot(commands2.TimedCommandRobot):
 
     def robotInit(self):
@@ -17,8 +20,10 @@ class Robot(commands2.TimedCommandRobot):
         self.troisdents = TroisDents()
 
         self.controller = wpilib.Joystick(0)
-
+        # JoystickButton(self.controller, 1).
         self.base_pilotable.setDefaultCommand(Piloter(self.base_pilotable, self.controller))
+
+
 
         wpilib.SmartDashboard.putData("AllerPyramide", AllerPyramide(self.base_pilotable, 1))
         wpilib.SmartDashboard.putData("Commandes/Pyramide1", AllerPyramide(self.base_pilotable, 1))
