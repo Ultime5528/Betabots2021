@@ -16,7 +16,7 @@ class Drop(commands2.CommandBase):
         self.timer.start()
 
     def execute(self) -> None:
-        self.trois_dents.extensionner()
+        self.trois_dents.drop()
 
     def isFinished(self) -> bool:
         return self.timer.get() >= 1.0

@@ -10,7 +10,7 @@ class Hold(commands2.CommandBase):
         self.addRequirements(self.trois_dents)
 
     def execute(self) -> None:
-        self.trois_dents.extensionner()
+        self.trois_dents.take()
 
     def isFinished(self) -> bool:
         return False
