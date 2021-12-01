@@ -12,7 +12,7 @@ from subsystems.troisdents import TroisDents
 class Robot(commands2.TimedCommandRobot):
 
     def robotInit(self):
-        wpilib.CameraServer.launch()
+        wpilib.CameraServer.launch('vision.py:main')
         self.base_pilotable = BasePilotable()
         self.troisdents = TroisDents()
 
