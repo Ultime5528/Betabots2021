@@ -5,16 +5,22 @@ import wpilib
 import wpilib.drive
 import rev
 import navx
-
+from wpimath.geometry._geometry import Rotation2d
+from wpimath.kinematics._kinematics import MecanumDriveOdometry, MecanumDriveWheelSpeeds
+from wpimath.kinematics import MecanumDriveKinematics
+from wpimath.geometry import Translation2d
 import constants
 
 
 class BasePilotable(commands2.SubsystemBase):
     # TBD
     pulses_per_meter = 1.0
-
+    
     def __init__(self) -> None:
         super().__init__()
+        #need correct mesurements
+        self.x_wheelbase = 0.8
+        self.y_wheelbase = 1.2
 
         self.fl_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_fl, rev.MotorType.kBrushless)
         # self.fl_motor.restoreFactoryDefaults()
@@ -49,6 +55,16 @@ class BasePilotable(commands2.SubsystemBase):
         self.fr_motor_encoder.setPositionConversionFactor(1 / self.pulses_per_meter)
         self.rl_motor_encoder.setPositionConversionFactor(1 / self.pulses_per_meter)
         self.rr_motor_encoder.setPositionConversionFactor(1 / self.pulses_per_meter)
+
+        self.kinematics = MecanumDriveKinematics(
+            Translation2d(self.x_wheelbase, self.y_wheelbase),
+            Translation2d(self.x_wheelbase, (self.y_wheelbase)*-1),
+            Translation2d((self.x_wheelbase)*-1, self.y_wheelbase),
+            Translation2d((self.x_wheelbase)*-1, (self.y_wheelbase)*-1),
+        )
+        self.wheelSpeeds = MecanumDriveWheelSpeeds()
+        self.odometry = MecanumDriveOdometry(self.kinematics, Rotation2d.fromDegrees(0.0))
+
         self.resetOdometry()
 
     def driveCartesian(self, ySpeed: float, xSpeed: float, zRot: float) -> None:
@@ -65,6 +81,15 @@ class BasePilotable(commands2.SubsystemBase):
         self.gyro.reset()
 
     def periodic(self) -> None:
+        self.wheelSpeeds.frontLeft = self.fl_motor_encoder.getVelocity()
+        self.wheelSpeeds.frontRight = self.fr_motor_encoder.getVelocity()
+        self.wheelSpeeds.rearLeft = self.rl_motor_encoder.getVelocity()
+        self.wheelSpeeds.rearRight = self.rr_motor_encoder.getVelocity()
+
+        self.odometry.update(
+            Rotation2d.fromDegrees(self.gyro.getAngle()),
+            self.wheelSpeeds
+        )
         wpilib.SmartDashboard.putNumber("fl_motor", self.fl_motor.get())
         wpilib.SmartDashboard.putNumber("fr_motor", self.fr_motor.get())
         wpilib.SmartDashboard.putNumber("rl_motor", self.rl_motor.get())
