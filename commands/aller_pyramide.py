@@ -9,7 +9,6 @@ class AllerPyramide(CommandBase):
 
     def __init__(self, base_pilotable: BasePilotable, target_x):
         super().__init__()
-
         self.base_pilotable = base_pilotable
         self.target_x = target_x
         self.addRequirements(base_pilotable)
@@ -25,7 +24,6 @@ class AllerPyramide(CommandBase):
         output = 1.5 * self.error
         if abs(output) > self.max_speed:
             output = (self.error / abs(self.error)) * self.max_speed
-
         self.base_pilotable.driveCartesian(output, 0, 0)
 
     def end(self, interrupted: bool) -> None:
@@ -33,6 +31,3 @@ class AllerPyramide(CommandBase):
 
     def isFinished(self) -> bool:
         return abs(self.error) <= 0.05
-
-    
-

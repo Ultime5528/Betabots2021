@@ -25,7 +25,7 @@ def main():
     #         notified[0] = True
     #         cond.notify()
 
-    NetworkTables.initialize(server="169.254.11.31")
+    NetworkTables.initialize(server="10.55.28.2")
     # NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
 
     # with cond:
