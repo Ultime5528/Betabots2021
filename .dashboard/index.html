@@ -42,7 +42,13 @@
         <div id="properties">
             <h2>Propriétés</h2>
 
-            <frc-number-field step="0.1" has-controls label="Temps Piston" source-key="/SmartDashboard/Proprietes/Temps Piston"></frc-number-field>
+            <frc-number-field step="0.1" has-controls label="Temps Piston" source-key="/Proprietes/Temps Piston"></frc-number-field>
+            <frc-number-field step="0.1" has-controls label="Temps Piston" source-key="/Proprietes/Temps Piston"></frc-number-field>
+            <frc-combo-box name="choix de pilotage" selected="Option 2" default="Option 1" options=[placeholder]></frc-combo-box>
+            <frc-combo-box step="0.1" has-controls label="Temps Piston" source-key="/Proprietes/Temps Piston"></frc-combo-box>
+            <frc-basic-fms-info match-type="2" match-number="5" event-name="Some Event" fms-control-data="33"></frc-basic-fms-info>
+
+
         </div>
 
         <script src="./frc-web-components.js"></script>
