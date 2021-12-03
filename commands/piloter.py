@@ -20,37 +20,37 @@ class Piloter(CommandBase):
         if a=='':
             if self.controller.getRawButton(2):
                 self.base_pilotable.driveCartesian(
-                    self.controller.getX(), self.controller.getY(), self.controller.getZ()
+                    0.5 * self.controller.getX(), 0.5 * -self.controller.getY(),0.5 * self.controller.getZ()
                 )
             else:
                 self.base_pilotable.driveCartesian(
-                    self.controller.getX(), self.controller.getY(), 0.0
+                   0.5 * self.controller.getX(), 0.5 * -self.controller.getY(), 0.0
                 )
         elif a=='':
             if self.controller.getRawButton(2):
                 self.base_pilotable.driveCartesian(
-                    self.controller.getX(), self.controller.getY(), 0.0
+                    self.controller.getX(), -self.controller.getY(), 0.0
                 )
             else:
                 self.base_pilotable.driveCartesian(
-                    self.controller.getX(), self.controller.getY(), self.controller.getZ()
+                    self.controller.getX(), -self.controller.getY(), self.controller.getZ()
                 )
         elif a=='':
             
             if self.controller.getRawButton(1):
                 self.base_pilotable.driveCartesian(
-                self.controller.getX(), self.controller.getY(), 1.0
+                self.controller.getX(), -self.controller.getY(), 1.0
                 )
             elif self.controller.getRawButton(2):
                 self.base_pilotable.driveCartesian(
-                    self.controller.getX(), self.controller.getY(), -1.0
+                    self.controller.getX(), -self.controller.getY(), -1.0
                 )
         elif a=='':
             self.base_pilotable.driveCartesian(
-                self.controller.getY(), self.controller.getZ(), 0.0
+                -self.controller.getY(), self.controller.getZ(), 0.0
             )
             if self.controller.getRawButton(1):
-                self.controller.getY(), self.controller.getZ(), 1.0
+                -self.controller.getY(), self.controller.getZ(), 1.0
 
             elif self.controller.getRawButton(2):
-                self.controller.getY(), self.controller.getZ(), -1.0
+                -self.controller.getY(), self.controller.getZ(), -1.0
