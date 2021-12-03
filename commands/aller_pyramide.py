@@ -4,22 +4,30 @@ import wpilib
 
 from subsystems.basepilotable import BasePilotable
 
+from networktables import NetworkTables
+
 class AllerPyramide(CommandBase):
-    def __init__(self, base_pilotable: BasePilotable, colonne: int):
+    def __init__(self, base_pilotable: BasePilotable, target_x):
         super().__init__()
 
         self.base_pilotable = base_pilotable
-        self.colonne = colonne
+        self.target_x = target_x
         self.addRequirements(base_pilotable)
-        self.timer = wpilib.Timer()
-        self.setName("AllerPyramide " + str(self.colonne))
+        self.setName("AllerPyramide ")
+        self.norm_x = NetworkTables.getEntry("Vision/Norm_X")
 
     def initialize(self):
-        self.timer.reset()
-        self.timer.start()
+        self.drive.resetEncoders()
 
     def execute(self):
-        print(self.colonne)
+        self.error = self.norm_x.getDouble() - target_x
+        self.base_pilotable.driveCartesian(self.error, 0, 0) 
 
-    def isFinished(self):
-        return self.timer.get() > 10
+    def end(self, interrupted: bool) -> None:
+        self.drive.driveCartesian(0, 0, 0)
+
+    def isFinished(self) -> bool:
+        return abs(self.error) <= 0.05
+
+    
+

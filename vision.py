@@ -3,6 +3,8 @@ import time
 import cv2
 import numpy as np
 from operator import attrgetter
+from networktables import NetworkTables
+import threading
 
 
 
@@ -14,6 +16,25 @@ class Particule:
 
 
 def main():
+    # cond = threading.Condition()
+    # notified = [False]
+
+    # def connectionListener(connected, info):
+    #     print(info, '; Connected=%s' % connected)
+    #     with cond:
+    #         notified[0] = True
+    #         cond.notify()
+
+    NetworkTables.initialize(server="169.254.11.31")
+    # NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
+
+    # with cond:
+    #     print("Waiting")
+    #     if not notified[0]:
+    #         cond.wait()
+
+
+    nt_norm_x = NetworkTables.getEntry("Vision/Norm_X")
     cs = CameraServer.getInstance()
     cs.enableLogging()
 
@@ -23,7 +44,7 @@ def main():
     camera.setBrightness(0)
     camera.setExposureManual(0)
     camera.setWhiteBalanceManual(6000)
-
+                                                                                                                        
     cvSink = cs.getVideo()
  
     outputStream = cs.putVideo("Name", 320, 240)
@@ -52,6 +73,7 @@ def main():
             centre_y = int(max_particule.h/2 + max_particule.y)
 
             norm_x = (centre_x / img.shape[1]) * 2 - 1
+            nt_norm_x.setDouble(norm_x)
 
 
 
