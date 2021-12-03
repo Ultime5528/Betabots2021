@@ -12,7 +12,7 @@ import constants
 class BasePilotable(commands2.SubsystemBase):
     # TBD
     pulses_per_meter = 1.0
-    use_navx = False
+    use_navx = True
 
     def __init__(self) -> None:
         super().__init__()

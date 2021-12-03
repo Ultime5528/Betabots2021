@@ -20,7 +20,7 @@ class Robot(commands2.TimedCommandRobot):
         self.controller = wpilib.Joystick(0)
 
         self.base_pilotable.setDefaultCommand(Piloter(self.base_pilotable, self.controller))
-        JoystickButton(self.controller, 3).whenPressed(AllerPyramide(self.base_pilotable, -0.5))
+        JoystickButton(self.controller, 3).whenPressed(AllerPyramide(self.base_pilotable, 0.0))
 
         wpilib.SmartDashboard.putData("AllerPyramide", AllerPyramide(self.base_pilotable, 1))
         wpilib.SmartDashboard.putData("Commandes/Pyramide1", AllerPyramide(self.base_pilotable, 1))
