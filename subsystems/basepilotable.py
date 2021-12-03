@@ -19,6 +19,7 @@ from utils.sparkmaxsim import SparkMaxSim
 class BasePilotable(commands2.SubsystemBase):
     # TBD
     pulses_per_meter = 1.0
+    use_navx = True
 
     def __init__(self) -> None:
         super().__init__()
@@ -45,8 +46,10 @@ class BasePilotable(commands2.SubsystemBase):
         for encoder in [self.fl_encoder, self.fr_encoder, self.rl_encoder, self.rr_encoder]:
             encoder.setPositionConversionFactor(1 / self.pulses_per_meter)
 
-        self.gyro = navx.AHRS(wpilib.SerialPort.Port.kMXP)
-        self.gyro.calibrate()
+        if self.use_navx:
+            self.gyro = navx.AHRS(wpilib.SerialPort.Port.kMXP)
+        else:
+            self.gyro = wpilib.ADXRS450_Gyro()
 
         self.drive = wpilib.drive.MecanumDrive(self.fl_motor, self.rl_motor, self.fr_motor, self.rr_motor)
         self.drive.setRightSideInverted(False)
