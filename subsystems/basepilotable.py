@@ -18,9 +18,9 @@ class BasePilotable(commands2.SubsystemBase):
     
     def __init__(self) -> None:
         super().__init__()
-        #need correct mesurements
-        self.x_wheelbase = 0.8
-        self.y_wheelbase = 1.2
+        # TODO correct mesurements
+        self.x_wheelbase = 0.58 / 2
+        self.y_wheelbase = 0.515 / 2
 
         self.fl_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_fl, rev.MotorType.kBrushless)
         # self.fl_motor.restoreFactoryDefaults()
