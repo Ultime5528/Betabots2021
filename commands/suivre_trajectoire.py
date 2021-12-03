@@ -1,40 +1,30 @@
-from typing import List
+import math
+
 import commands2
-from wpimath.trajectory import TrajectoryConfig, TrajectoryGenerator
-from wpilib.geometry import Pose2d, Translation2d
 from subsystems.basepilotable import BasePilotable
-from commands.specific_turn import SpecificTurn
-from commands.drive_distance import DriveDistance
+from wpimath.geometry import Pose2d
+from termcolor import colored
+
 
 class SuivreTrajectoire(commands2.CommandBase):
-    def __init__(self, drive: BasePilotable, positionDebut: Pose2d, waypoints: List[Translation2d], positionFin: Pose2d, maxVelocity: float, maxAcceleration: float) -> None:
+    def __init__(self, drive: BasePilotable, end_position: Pose2d) -> None:
         super().__init__()
         self.drive = drive
-        self.trajectory = TrajectoryGenerator.generateTrajectory(
-            positionDebut, 
-            waypoints, 
-            positionFin, 
-            TrajectoryConfig(maxAcceleration, maxVelocity))
-        self.states = self.trajectory.states()
-        self.angleInitial = self.trajectory.states()[0].pose.rotation()
-    
+        self.end_position = end_position
+
     def initialize(self) -> None:
         self.drive.resetOdometry()
-        self.index = 0
 
     def execute(self) -> None:
-        while(self.index < len(self.states)):
-            self.index += 1
-
-        # self.error = self.trajectory.states()[self.index].pose.rotation() - self.drive.gyro.getAngle() - self.angleInitial
-        twistPath = self.drive.odometry.getPose().log(self.index)
-        self.drive.driveCartesian(twistPath.dy, twistPath.dx, twistPath.dtheta)
+        twist = self.drive.odometry.getPose().log(self.end_position)
+        hypotenuse = math.hypot(twist.dx, twist.dy)
+        print(colored(twist.dx/hypotenuse, "green"))
+        self.drive.driveCartesian(twist.dy / hypotenuse, twist.dx / hypotenuse, twist.dtheta_degrees)
 
     def isFinished(self) -> bool:
-        return self.index > len(self.states)
+        print(colored(self.drive.odometry.getPose().translation().distance(self.end_position.translation()), "yellow"))
+        return self.drive.odometry.getPose().translation().distance(self.end_position.translation()) <= 0.25
 
     def end(self, interrupted: bool) -> None:
-        return super().end(interrupted)
-        #need stuff here
-
-        
+        print(colored("Finish", "red"))
+        self.drive.driveCartesian(0, 0, 0)
