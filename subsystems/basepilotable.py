@@ -12,13 +12,12 @@ from wpimath.geometry import Translation2d
 from wpimath.kinematics import MecanumDriveOdometry, MecanumDriveWheelSpeeds, MecanumDriveKinematics
 
 import constants
-from utils.mecanumdrivesim import MecanumDriveSim
 from utils.sparkmaxsim import SparkMaxSim
 
 
 class BasePilotable(commands2.SubsystemBase):
     # TBD
-    pulses_per_meter = 1.0
+    pulses_per_meter = 16.68
     use_navx = True
 
     def __init__(self) -> None:
@@ -45,11 +44,15 @@ class BasePilotable(commands2.SubsystemBase):
 
         for encoder in [self.fl_encoder, self.fr_encoder, self.rl_encoder, self.rr_encoder]:
             encoder.setPositionConversionFactor(1 / self.pulses_per_meter)
+            encoder.setVelocityConversionFactor(1 / (self.pulses_per_meter * 60))
 
         if self.use_navx:
             self.gyro = navx.AHRS(wpilib.SerialPort.Port.kMXP)
+            self.gyro.reset()
+            self.gyro.calibrate()
         else:
             self.gyro = wpilib.ADXRS450_Gyro()
+        
 
         self.drive = wpilib.drive.MecanumDrive(self.fl_motor, self.rl_motor, self.fr_motor, self.rr_motor)
         self.drive.setRightSideInverted(False)
@@ -64,6 +67,7 @@ class BasePilotable(commands2.SubsystemBase):
         self.odometry = MecanumDriveOdometry(self.kinematics, Rotation2d.fromDegrees(0.0))
 
         if RobotBase.isSimulation():
+            from utils.mecanumdrivesim import MecanumDriveSim
             self.field = wpilib.Field2d()
             wpilib.SmartDashboard.putData("Field", self.field)
             self.drive_sim = MecanumDriveSim(self.kinematics)

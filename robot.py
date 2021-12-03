@@ -7,11 +7,14 @@ from commands2.button import JoystickButton
 from commands.drop import Drop
 from commands.dropreset import DropReset
 from commands.hold import Hold
+from wpimath.geometry import Pose2d
 from commands.piloter import Piloter
 from commands.aller_pyramide import AllerPyramide
 from commands.reset import Reset
 from commands.troisdents_idle import TroisDentsIdle
+from commands.suivre_trajectoire import SuivreTrajectoire
 
+from wpilib.geometry import Rotation2d
 from subsystems.basepilotable import BasePilotable
 from subsystems.troisdents import TroisDents
 
@@ -43,7 +46,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Commandes/Pyramide3", AllerPyramide(self.base_pilotable, 3))
         wpilib.SmartDashboard.putData("Commandes/Pyramide4", AllerPyramide(self.base_pilotable, 4))
         wpilib.SmartDashboard.putData("Commandes/Pyramide5", AllerPyramide(self.base_pilotable, 5))
-
+        wpilib.SmartDashboard.putData("Suivre Trajectoire", SuivreTrajectoire(self.base_pilotable, Pose2d(-4, 0, Rotation2d.fromDegrees(-90))))
         wpilib.SmartDashboard.putNumber("Proprietes/Temps Piston", 0)
 
     def autonomousInit(self):
