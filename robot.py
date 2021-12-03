@@ -4,11 +4,19 @@ import commands2
 import wpilib
 from commands2.button import JoystickButton
 
+from commands.drop import Drop
+from commands.dropreset import DropReset
+from commands.hold import Hold
 from commands.piloter import Piloter
 from commands.aller_pyramide import AllerPyramide
+from commands.reset import Reset
+from commands.troisdents_idle import TroisDentsIdle
 
 from subsystems.basepilotable import BasePilotable
 from subsystems.troisdents import TroisDents
+
+from commands2.button import JoystickButton
+
 
 class Robot(commands2.TimedCommandRobot):
 
@@ -18,9 +26,16 @@ class Robot(commands2.TimedCommandRobot):
         self.troisdents = TroisDents()
 
         self.controller = wpilib.Joystick(0)
+        JoystickButton(self.controller, 1).whenPressed(Drop(self.troisdents))
+        JoystickButton(self.controller, 2).whenPressed(Hold(self.troisdents))
+        JoystickButton(self.controller, 3).whenPressed(Reset(self.troisdents))
+        JoystickButton(self.controller, 4).whenPressed(TroisDentsIdle(self.troisdents))
+        JoystickButton(self.controller, 5).whenPressed(DropReset(self.troisdents))
 
         self.base_pilotable.setDefaultCommand(Piloter(self.base_pilotable, self.controller))
         JoystickButton(self.controller, 3).whenPressed(AllerPyramide(self.base_pilotable, 0.0))
+
+
 
         wpilib.SmartDashboard.putData("AllerPyramide", AllerPyramide(self.base_pilotable, 1))
         wpilib.SmartDashboard.putData("Commandes/Pyramide1", AllerPyramide(self.base_pilotable, 1))

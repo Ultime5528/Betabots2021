@@ -14,10 +14,10 @@ class TroisDents(commands2.SubsystemBase):
         self.addChild("Piston", self.piston)
 
     def drop(self):
-        self.piston.set(wpilib.DoubleSolenoid.Value.kForward)
+        self.piston.set(wpilib.DoubleSolenoid.Value.kReverse)
 
     def take(self):
-        self.piston.set(wpilib.DoubleSolenoid.Value.kReverse)
+        self.piston.set(wpilib.DoubleSolenoid.Value.kForward)
 
     def idle(self):
         self.piston.set(wpilib.DoubleSolenoid.Value.kOff)
