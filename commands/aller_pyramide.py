@@ -17,11 +17,13 @@ class AllerPyramide(CommandBase):
         self.max_speed = 0.1
         self.norm_x = NetworkTables.getEntry("Vision/Norm_X")
 
+    def initialize(self):
+        self.error = float("inf")
 
     def execute(self):
         self.error = self.norm_x.getDouble(0) - self.target_x
-        ouput = 2 * self.error
-        if abs(ouput) > self.max_speed:
+        output = 1.5 * self.error
+        if abs(output) > self.max_speed:
             output = (self.error / abs(self.error)) * self.max_speed
 
         self.base_pilotable.driveCartesian(output, 0, 0)
