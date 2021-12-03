@@ -12,6 +12,7 @@ import constants
 class BasePilotable(commands2.SubsystemBase):
     # TBD
     pulses_per_meter = 1.0
+    use_navx = False
 
     def __init__(self) -> None:
         super().__init__()
@@ -40,7 +41,10 @@ class BasePilotable(commands2.SubsystemBase):
         self.rl_motor_encoder = self.rl_motor.getEncoder()
         self.rr_motor_encoder = self.rr_motor.getEncoder()
 
-        self.gyro = navx.AHRS(wpilib.SerialPort.Port.kMXP)
+        if self.use_navx:
+            self.gyro = navx.AHRS(wpilib.SerialPort.Port.kMXP)
+        else:
+            self.gyro = wpilib.ADXRS450_Gyro()
 
         self.drive = wpilib.drive.MecanumDrive(self.fl_motor, self.rl_motor, self.fr_motor, self.rr_motor)
         self.drive.setRightSideInverted(False)
