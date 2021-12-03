@@ -1,5 +1,7 @@
 import wpilib
 import commands2
+
+from constants import Proprietes
 from subsystems.troisdents import TroisDents
 
 
@@ -19,7 +21,7 @@ class Drop(commands2.CommandBase):
         self.trois_dents.drop()
 
     def isFinished(self) -> bool:
-        return self.timer.get() >= 1.0
+        return self.timer.get() >= Proprietes.dropReturnTime
 
     def end(self, interrupted: bool) -> None:
         self.trois_dents.idle()

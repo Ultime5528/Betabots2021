@@ -1,6 +1,7 @@
 import wpilib
 import commands2
 
+from constants import Ports
 
 class TroisDents(commands2.SubsystemBase):
     def __init__(self):
@@ -10,7 +11,7 @@ class TroisDents(commands2.SubsystemBase):
             self.__class__.__name__,
             self.__class__.__name__)
 
-        self.piston = wpilib.DoubleSolenoid(0, 1)
+        self.piston = wpilib.DoubleSolenoid(*Ports.trois_dents_piston)
         self.addChild("Piston", self.piston)
 
     def drop(self):
@@ -21,3 +22,4 @@ class TroisDents(commands2.SubsystemBase):
 
     def idle(self):
         self.piston.set(wpilib.DoubleSolenoid.Value.kOff)
+
