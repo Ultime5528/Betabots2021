@@ -10,7 +10,7 @@ a = ''
 class Piloter(CommandBase):
     def __init__(self, base_pilotable: BasePilotable, controller: wpilib.Joystick):
         super().__init__()
-        
+
         self.controller = controller
         self.base_pilotable = base_pilotable
         self.addRequirements(base_pilotable)
@@ -20,11 +20,11 @@ class Piloter(CommandBase):
         if a=='':
             if self.controller.getRawButton(2):
                 self.base_pilotable.driveCartesian(
-                    0.5 * self.controller.getX(), 0.5 * -self.controller.getY(),0.5 * self.controller.getZ()
+                    0.4 * self.controller.getX(), 0.4 * -self.controller.getY(), 0.2 * self.controller.getZ()
                 )
             else:
                 self.base_pilotable.driveCartesian(
-                   0.5 * self.controller.getX(), 0.5 * -self.controller.getY(), 0.0
+                   0.4 * self.controller.getX(), 0.4 * -self.controller.getY(), 0.0
                 )
         elif a=='':
             if self.controller.getRawButton(2):
@@ -36,7 +36,7 @@ class Piloter(CommandBase):
                     self.controller.getX(), -self.controller.getY(), self.controller.getZ()
                 )
         elif a=='':
-            
+
             if self.controller.getRawButton(1):
                 self.base_pilotable.driveCartesian(
                 self.controller.getX(), -self.controller.getY(), 1.0

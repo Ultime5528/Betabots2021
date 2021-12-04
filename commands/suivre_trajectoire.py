@@ -18,11 +18,10 @@ class SuivreTrajectoire(commands2.CommandBase):
     def execute(self) -> None:
         twist = self.drive.odometry.getPose().log(self.end_position)
         hypotenuse = math.hypot(twist.dx, twist.dy)
-        speed = 0.1
+        speed = 0.18
+        turn_speed = 0.1
         if abs(twist.dtheta_degrees) <= 3:
             turn_speed = 0.0
-        else:
-            turn_speed = 0.05
         self.drive.driveCartesian(-speed * twist.dy / hypotenuse, speed * twist.dx / hypotenuse, math.copysign(turn_speed, -twist.dtheta_degrees))
 
     def isFinished(self) -> bool:

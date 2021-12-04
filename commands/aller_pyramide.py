@@ -13,7 +13,7 @@ class AllerPyramide(CommandBase):
         self.target_x = target_x
         self.addRequirements(base_pilotable)
         self.setName("AllerPyramide ")
-        self.max_speed = 0.1
+        self.max_speed = 0.15
         self.norm_x = NetworkTables.getEntry("Vision/Norm_X")
 
     def initialize(self):

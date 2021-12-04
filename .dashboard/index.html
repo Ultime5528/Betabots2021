@@ -3,55 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <title>My Robot Dashboard!</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="jquery-2.2.2.min.js"></script>
+    <script src="/networktables/camera.js"></script>
+	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <frc-dashboard >
-        <div id="pyramid">
-            <h2>Pyramide</h2>
-
-            <div class="pyramid-row">
-                <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide3">
-                </frc-robot-command>
+    <frc-dashboard onload="ntLoaded()">
+        <div style="display: flex;align-items: center;">
+            <div style="display: inline-block; margin-right: 36px;">
+                NetworkTables websocket: <span id="connectstate">Unknown state</span><br/>
+                Robot: <span id="robotstate">Unknown state</span> @ <span id="robotAddress">disconnected</span>
             </div>
-
-            <div class="pyramid-row">
-                <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide2">
-                </frc-robot-command>
-                <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide3">
-                </frc-robot-command>
-                <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide4">
-                </frc-robot-command>
+            <frc-basic-fms-info></frc-basic-fms-info>
+        </div>
+        <hr/>
+        <div style="display: flex; align-items: center;">
+            <div id="pyramid" style="flex-grow: 1;">
+                <h2>Pyramide</h2>
+                <div class="pyramid-row">
+                    <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide3"></frc-robot-command>
+                </div>
+                <div class="pyramid-row">
+                    <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide2"></frc-robot-command>
+                    <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide3"></frc-robot-command>
+                    <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide4"></frc-robot-command>
+                </div>
+                <div class="pyramid-row">
+                    <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide1"></frc-robot-command>
+                    <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide2"></frc-robot-command>
+                    <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide3"></frc-robot-command>
+                    <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide4"></frc-robot-command>
+                    <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide5"></frc-robot-command>
+                </div>
             </div>
-
-            <div class="pyramid-row">
-                <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide1">
-                </frc-robot-command>
-                <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide2">
-                </frc-robot-command>
-                <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide3">
-                </frc-robot-command>
-                <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide4">
-                </frc-robot-command>
-                <frc-robot-command class="pyramid-button" source-key="/SmartDashboard/Commandes/Pyramide5">
-                </frc-robot-command>
-            </div>
+            <div id="camera_container"></div>
         </div>
 
         <div id="properties">
             <h2>Propriétés</h2>
-
-            <frc-number-field step="0.1" has-controls label="Temps Piston" source-key="/Proprietes/Temps Piston"></frc-number-field>
-            <frc-number-field step="0.1" has-controls label="Temps Piston" source-key="/Proprietes/Temps Piston"></frc-number-field>
-            <frc-combo-box name="choix de pilotage" selected="Option 2" default="Option 1" options=[placeholder]></frc-combo-box>
-            <frc-combo-box step="0.1" has-controls label="Temps Piston" source-key="/Proprietes/Temps Piston"></frc-combo-box>
-            <frc-basic-fms-info match-type="2" match-number="5" event-name="Some Event" fms-control-data="33"></frc-basic-fms-info>
-
-
+			<nt-number key="/Proprietes/Trois Dents/DropReturnTime" value="1"></nt-number>
+			<nt-number key="/Proprietes/Trois Dents/DropResetTime" value="1"></nt-number>
+            <frc-number-field step="0.25" has-controls label="DropReturnTime" source-key="/Proprietes/Trois Dents/DropReturnTime"></frc-number-field>
+            <frc-number-field step="0.25" has-controls label="DropResetTime" source-key="/Proprietes/Trois Dents/DropResetTime"></frc-number-field>
+            <frc-combo-box name="Mode de pilotage" default="A" options='["A", "B"]' source-key="/Proprietes/ModePilotage"></frc-combo-box>
         </div>
+        <script src="./frc-web-components.min.js"></script>
+        <script>
+            function onRobotConnection(connected) {
+                document.getElementById("robotstate").innerHTML = connected ? "Connected!" : "Disconnected";
+                document.getElementById("robotAddress").innerHTML = connected ? NetworkTables.getRobotAddress() : "disconnected";
+            }
 
-        <script src="./frc-web-components.js"></script>
+            function onNetworkTablesConnection(connected) {
+                document.getElementById("connectstate").innerHTML = connected ? "Connected!" : "Disconnected";
+            }
+
+            function ntLoaded() {
+                console.log("NT Loaded");
+                NetworkTables.addWsConnectionListener(onNetworkTablesConnection, true);
+                NetworkTables.addRobotConnectionListener(onRobotConnection, true);
+
+                loadCameraOnConnect({
+                    container: '#camera_container', // where to put the img tag
+                    proto: null,                    // optional, defaults to http://
+                    host: null,                     // optional, if null will use robot's autodetected IP address
+                    port: 1182,                     // webserver port
+                    image_url: '/stream.mjpg',   // mjpg stream of camera
+                    data_url: '/settings.json',      // used to test if connection is up
+                    wait_img: null,                 // optional img to show when not connected, can use SVG instead
+                    error_img: null,                // optional img to show when error connecting, can use SVG instead
+                    attrs: {                        // optional: attributes set on svg or img element
+                        width: 640,                     // optional, stretches image to this width
+                        height: 480,                    // optional, stretches image to this width
+                    }
+                });
+            }
+        </script>
 </body>
 
 </html>

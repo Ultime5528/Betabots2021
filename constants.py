@@ -15,6 +15,10 @@ class Ports:
     trois_dents_piston = (0, 1)
 
 
-class Proprietes:
+class _Proprietes:
     dropReturnTime = ntproperty("/Proprietes/Trois Dents/DropReturnTime", 1, writeDefault=False)
-    dropReturnTime = ntproperty("/Proprietes/Trois Dents/DropReturnTime", 1, writeDefault=False)
+    dropResetTime = ntproperty("/Proprietes/Trois Dents/DropResetTime", 1, writeDefault=False)
+    mode_pilotage = ntproperty("/Proprietes/ModePilotage/selected", "A", writeDefault=False)
+
+
+Proprietes = _Proprietes()

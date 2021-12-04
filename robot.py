@@ -29,25 +29,21 @@ class Robot(commands2.TimedCommandRobot):
         self.troisdents = TroisDents()
 
         self.controller = wpilib.Joystick(0)
-        JoystickButton(self.controller, 1).whenPressed(Drop(self.troisdents))
-        JoystickButton(self.controller, 2).whenPressed(Hold(self.troisdents))
-        JoystickButton(self.controller, 3).whenPressed(Reset(self.troisdents))
-        JoystickButton(self.controller, 4).whenPressed(TroisDentsIdle(self.troisdents))
-        JoystickButton(self.controller, 5).whenPressed(DropReset(self.troisdents))
+        JoystickButton(self.controller, 7).whenPressed(Hold(self.troisdents))
+        JoystickButton(self.controller, 8).whenPressed(TroisDentsIdle(self.troisdents))
+        JoystickButton(self.controller, 9).whenPressed(Reset(self.troisdents))
+        JoystickButton(self.controller, 11).whenPressed(DropReset(self.troisdents))
+        JoystickButton(self.controller, 12).whenPressed(Drop(self.troisdents))
 
         self.base_pilotable.setDefaultCommand(Piloter(self.base_pilotable, self.controller))
         JoystickButton(self.controller, 3).whenPressed(AllerPyramide(self.base_pilotable, 0.0))
 
-
-
-        wpilib.SmartDashboard.putData("AllerPyramide", AllerPyramide(self.base_pilotable, 1))
-        wpilib.SmartDashboard.putData("Commandes/Pyramide1", AllerPyramide(self.base_pilotable, 1))
-        wpilib.SmartDashboard.putData("Commandes/Pyramide2", AllerPyramide(self.base_pilotable, 2))
-        wpilib.SmartDashboard.putData("Commandes/Pyramide3", AllerPyramide(self.base_pilotable, 3))
-        wpilib.SmartDashboard.putData("Commandes/Pyramide4", AllerPyramide(self.base_pilotable, 4))
-        wpilib.SmartDashboard.putData("Commandes/Pyramide5", AllerPyramide(self.base_pilotable, 5))
-        wpilib.SmartDashboard.putData("Suivre Trajectoire", SuivreTrajectoire(self.base_pilotable, Pose2d(-4, 0, Rotation2d.fromDegrees(-90))))
-        wpilib.SmartDashboard.putNumber("Proprietes/Temps Piston", 0)
+        # wpilib.SmartDashboard.putData("AllerPyramide", AllerPyramide(self.base_pilotable, 1))
+        # wpilib.SmartDashboard.putData("Commandes/Pyramide1", AllerPyramide(self.base_pilotable, 1))
+        # wpilib.SmartDashboard.putData("Commandes/Pyramide2", AllerPyramide(self.base_pilotable, 2))
+        # wpilib.SmartDashboard.putData("Commandes/Pyramide3", AllerPyramide(self.base_pilotable, 3))
+        # wpilib.SmartDashboard.putData("Commandes/Pyramide4", AllerPyramide(self.base_pilotable, 4))
+        # wpilib.SmartDashboard.putData("Commandes/Pyramide5", AllerPyramide(self.base_pilotable, 5))
 
     def autonomousInit(self):
         pass
