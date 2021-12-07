@@ -19,6 +19,9 @@ class _Proprietes:
     dropReturnTime = ntproperty("/Proprietes/Trois Dents/DropReturnTime", 1, writeDefault=False)
     dropResetTime = ntproperty("/Proprietes/Trois Dents/DropResetTime", 1, writeDefault=False)
     mode_pilotage = ntproperty("/Proprietes/ModePilotage/selected", "A", writeDefault=False)
+    pilotage_max_x = ntproperty("/Proprietes/PilotageMaxX", 0.4, writeDefault=False)
+    pilotage_max_y = ntproperty("/Proprietes/PilotageMaxY", 0.4, writeDefault=False)
+    pilotage_max_z = ntproperty("/Proprietes/PilotageMaxZ", 0.2, writeDefault=False)
 
 
 Proprietes = _Proprietes()
