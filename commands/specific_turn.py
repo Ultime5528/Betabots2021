@@ -19,4 +19,4 @@ class SpecificTurn(commands2.CommandBase):
         self.drive.driveCartesian(0, 0, 0)
 
     def isFinished(self) -> bool:
-        return self.drive.gyro.getAngle() >= self.angle
+        return abs(self.drive.getAngle() - self.angle) <= 2

@@ -2,19 +2,16 @@
 
 import commands2
 import wpilib
-from commands2.button import JoystickButton
 
 from commands.drop import Drop
 from commands.dropreset import DropReset
 from commands.hold import Hold
-from wpimath.geometry import Pose2d
+from commands.autojaune import AutoJaune
 from commands.piloter import Piloter
 from commands.aller_pyramide import AllerPyramide
 from commands.reset import Reset
 from commands.troisdents_idle import TroisDentsIdle
-from commands.suivre_trajectoire import SuivreTrajectoire
 
-from wpilib.geometry import Rotation2d
 from subsystems.basepilotable import BasePilotable
 from subsystems.troisdents import TroisDents
 
@@ -48,6 +45,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Commandes/Hold", Hold(self.troisdents))
         wpilib.SmartDashboard.putData("Commandes/Reset", Reset(self.troisdents))
         wpilib.SmartDashboard.putData("Commandes/DropReset", DropReset(self.troisdents))
+        wpilib.SmartDashboard.putData("Commandes/AutoJaune", AutoJaune(self.troisdents, self.base_pilotable))
 
     def autonomousInit(self):
         pass
