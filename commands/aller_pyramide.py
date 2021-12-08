@@ -28,10 +28,12 @@ class AllerPyramide(CommandBase):
         output = Proprietes.alligner_error_multiplier * self.error
         if abs(output) > Proprietes.alligner_max_speed:
             output = (self.error / abs(self.error)) * Proprietes.alligner_max_speed
-        self.base_pilotable.driveCartesian(output, 0.1, 0)
+        self.base_pilotable.driveCartesian(output, Proprietes.all, 0)
 
     def end(self, interrupted: bool) -> None:
         self.base_pilotable.driveCartesian(0, 0, 0)
 
     def isFinished(self) -> bool:
         return abs(self.error) <= 0.05
+        # return not self.base_pilotable.isMoving()
+        # return self.base_pilotable.getAccelX = 0

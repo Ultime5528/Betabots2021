@@ -10,7 +10,7 @@ from commands.hold import Hold
 from wpimath.geometry import Pose2d
 from commands.piloter import Piloter
 from commands.aligner_pyramide import AlignerPyramide
-from commands.aligner_pyramide import AllerPyramide
+from commands.aller_pyramide import AllerPyramide
 from commands.reset import Reset
 from commands.troisdents_idle import TroisDentsIdle
 from commands.suivre_trajectoire import SuivreTrajectoire
