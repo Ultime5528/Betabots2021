@@ -10,6 +10,7 @@ from commands.hold import Hold
 from wpimath.geometry import Pose2d
 from commands.piloter import Piloter
 from commands.aligner_pyramide import AlignerPyramide
+from commands.aligner_pyramide import AllerPyramide
 from commands.reset import Reset
 from commands.troisdents_idle import TroisDentsIdle
 from commands.suivre_trajectoire import SuivreTrajectoire
@@ -38,6 +39,7 @@ class Robot(commands2.TimedCommandRobot):
 
         self.base_pilotable.setDefaultCommand(Piloter(self.base_pilotable, self.stick, self.xbox_controller))
         JoystickButton(self.stick, 3).whenPressed(AlignerPyramide(self.base_pilotable, 0.0))
+        JoystickButton(self.stick, 4).whenPressed(AllerPyramide(self.base_pilotable, 0.0))
 
         # wpilib.SmartDashboard.putData("AlignerPyramide", AlignerPyramide(self.base_pilotable, 1))
         # wpilib.SmartDashboard.putData("Commandes/Pyramide1", AlignerPyramide(self.base_pilotable, 1))

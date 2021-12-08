@@ -20,6 +20,10 @@ class AllerPyramide(CommandBase):
         self.error = float("inf")
 
     def execute(self):
+        wpilib.SmartDashboard.putNumber("accelX", self.base_pilotable.getAccelX())
+        wpilib.SmartDashboard.putNumber("accelY", self.base_pilotable.getAccelY())
+        wpilib.SmartDashboard.putNumber("accelZ", self.base_pilotable.getAccelZ())
+        wpilib.SmartDashboard.putBoolean("isMoving", self.base_pilotable.isMoving())
         self.error = self.norm_x.getDouble(0) - self.target_x
         output = 1.5 * self.error
         if abs(output) > self.max_speed:
