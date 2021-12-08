@@ -9,7 +9,7 @@ from commands.dropreset import DropReset
 from commands.hold import Hold
 from wpimath.geometry import Pose2d
 from commands.piloter import Piloter
-from commands.aller_pyramide import AllerPyramide
+from commands.aligner_pyramide import AlignerPyramide
 from commands.reset import Reset
 from commands.troisdents_idle import TroisDentsIdle
 from commands.suivre_trajectoire import SuivreTrajectoire
@@ -37,14 +37,14 @@ class Robot(commands2.TimedCommandRobot):
         JoystickButton(self.stick, 12).whenPressed(Drop(self.troisdents))
 
         self.base_pilotable.setDefaultCommand(Piloter(self.base_pilotable, self.stick, self.xbox_controller))
-        JoystickButton(self.stick, 3).whenPressed(AllerPyramide(self.base_pilotable, 0.0))
+        JoystickButton(self.stick, 3).whenPressed(AlignerPyramide(self.base_pilotable, 0.0))
 
-        # wpilib.SmartDashboard.putData("AllerPyramide", AllerPyramide(self.base_pilotable, 1))
-        # wpilib.SmartDashboard.putData("Commandes/Pyramide1", AllerPyramide(self.base_pilotable, 1))
-        # wpilib.SmartDashboard.putData("Commandes/Pyramide2", AllerPyramide(self.base_pilotable, 2))
-        # wpilib.SmartDashboard.putData("Commandes/Pyramide3", AllerPyramide(self.base_pilotable, 3))
-        # wpilib.SmartDashboard.putData("Commandes/Pyramide4", AllerPyramide(self.base_pilotable, 4))
-        # wpilib.SmartDashboard.putData("Commandes/Pyramide5", AllerPyramide(self.base_pilotable, 5))
+        # wpilib.SmartDashboard.putData("AlignerPyramide", AlignerPyramide(self.base_pilotable, 1))
+        # wpilib.SmartDashboard.putData("Commandes/Pyramide1", AlignerPyramide(self.base_pilotable, 1))
+        # wpilib.SmartDashboard.putData("Commandes/Pyramide2", AlignerPyramide(self.base_pilotable, 2))
+        # wpilib.SmartDashboard.putData("Commandes/Pyramide3", AlignerPyramide(self.base_pilotable, 3))
+        # wpilib.SmartDashboard.putData("Commandes/Pyramide4", AlignerPyramide(self.base_pilotable, 4))
+        # wpilib.SmartDashboard.putData("Commandes/Pyramide5", AlignerPyramide(self.base_pilotable, 5))
         wpilib.SmartDashboard.putData("Commandes/Hold", Hold(self.troisdents))
         wpilib.SmartDashboard.putData("Commandes/Reset", Reset(self.troisdents))
         wpilib.SmartDashboard.putData("Commandes/DropReset", DropReset(self.troisdents))
