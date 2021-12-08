@@ -148,3 +148,15 @@ class BasePilotable(commands2.SubsystemBase):
 
     def getAngle(self):
         return -math.remainder(self.gyro.getAngle(), 360.0)
+
+    def getAccelX(self):
+        return self.gyro.getWorldLinearAccelX()
+
+    def getAccelY(self):
+        return self.gyro.getWorldLinearAccelY()
+    
+    def getAccelZ(self):
+        return self.gyro.getWorldLinearAccelZ()
+    
+    def isMoving(self):
+        return self.gyro.isMoving()
