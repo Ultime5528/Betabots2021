@@ -34,6 +34,6 @@ class AllerPyramide(CommandBase):
         self.base_pilotable.driveCartesian(0, 0, 0)
 
     def isFinished(self) -> bool:
-        return abs(self.error) <= 0.05
-        # return not self.base_pilotable.isMoving()
+        # return abs(self.error) <= 0.05
+        return not self.base_pilotable.isMoving()
         # return self.base_pilotable.getAccelX = 0
