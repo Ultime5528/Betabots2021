@@ -2,6 +2,7 @@ from commands2 import CommandBase
 
 import wpilib
 from subsystems.basepilotable import BasePilotable
+from constants import Proprietes
 
 from networktables import NetworkTables
 
@@ -13,7 +14,6 @@ class AllerPyramide(CommandBase):
         self.target_x = target_x
         self.addRequirements(base_pilotable)
         self.setName("AllerPyramide ")
-        self.max_speed = 0.15
         self.norm_x = NetworkTables.getEntry("Vision/Norm_X")
 
     def initialize(self):
@@ -25,10 +25,10 @@ class AllerPyramide(CommandBase):
         wpilib.SmartDashboard.putNumber("accelZ", self.base_pilotable.getAccelZ())
         wpilib.SmartDashboard.putBoolean("isMoving", self.base_pilotable.isMoving())
         self.error = self.norm_x.getDouble(0) - self.target_x
-        output = 1.5 * self.error
-        if abs(output) > self.max_speed:
-            output = (self.error / abs(self.error)) * self.max_speed
-        self.base_pilotable.driveCartesian(output, 0, 0)
+        output = Proprietes.alligner_error_multiplier * self.error
+        if abs(output) > Proprietes.alligner_max_speed:
+            output = (self.error / abs(self.error)) * Proprietes.alligner_max_speed
+        self.base_pilotable.driveCartesian(output, 0.1, 0)
 
     def end(self, interrupted: bool) -> None:
         self.base_pilotable.driveCartesian(0, 0, 0)

@@ -2,6 +2,7 @@ from commands2 import CommandBase
 
 import wpilib
 from subsystems.basepilotable import BasePilotable
+from constants import Proprietes
 
 from networktables import NetworkTables
 
@@ -21,9 +22,9 @@ class AlignerPyramide(CommandBase):
 
     def execute(self):
         self.error = self.norm_x.getDouble(0) - self.target_x
-        output = 1.5 * self.error
-        if abs(output) > self.max_speed:
-            output = (self.error / abs(self.error)) * self.max_speed
+        output = Proprietes.alligner_error_multiplier * self.error
+        if abs(output) > Proprietes.alligner_max_speed:
+            output = (self.error / abs(self.error)) * Proprietes.alligner_max_speed
         self.base_pilotable.driveCartesian(output, 0, 0)
 
     def end(self, interrupted: bool) -> None:
