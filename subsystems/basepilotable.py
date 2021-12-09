@@ -50,8 +50,8 @@ class BasePilotable(commands2.SubsystemBase):
             self.gyro = navx.AHRS(wpilib.SerialPort.Port.kMXP)
             self.gyro.reset()
             self.gyro.calibrate()
-        else:
-            self.gyro = wpilib.ADXRS450_Gyro()
+        # else:
+        #     self.gyro = wpilib.ADXRS450_Gyro()
         
 
         self.drive = wpilib.drive.MecanumDrive(self.fl_motor, self.rl_motor, self.fr_motor, self.rr_motor)
@@ -123,6 +123,12 @@ class BasePilotable(commands2.SubsystemBase):
         wpilib.SmartDashboard.putNumber("Odometry/X", pose.X())
         wpilib.SmartDashboard.putNumber("Odometry/Y", pose.Y())
         wpilib.SmartDashboard.putNumber("Odometry/Rotation", pose.rotation().degrees())
+        wpilib.SmartDashboard.putNumber("accelX", self.getAccelX())
+        wpilib.SmartDashboard.putNumber("accelY", self.getAccelY())
+        wpilib.SmartDashboard.putNumber("accelZ", self.getAccelZ())
+        wpilib.SmartDashboard.putNumber("velocity x", self.gyro.getVelocityX())
+        wpilib.SmartDashboard.putNumber("velocity y", self.gyro.getVelocityY())
+        wpilib.SmartDashboard.putBoolean("isMoving", self.isMoving())
 
     def drive_test(self, value: float):
         self.fl_motor.set(value)

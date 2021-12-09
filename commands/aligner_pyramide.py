@@ -22,9 +22,9 @@ class AlignerPyramide(CommandBase):
 
     def execute(self):
         self.error = self.norm_x.getDouble(0) - self.target_x
-        output = Proprietes.alligner_error_multiplier * self.error
-        if abs(output) > Proprietes.alligner_max_speed:
-            output = (self.error / abs(self.error)) * Proprietes.alligner_max_speed
+        output = Proprietes.aligner_error_multiplier * self.error
+        if abs(output) > Proprietes.aligner_max_speed:
+            output = (self.error / abs(self.error)) * Proprietes.aligner_max_speed
         self.base_pilotable.driveCartesian(output, 0, 0)
 
     def end(self, interrupted: bool) -> None:
