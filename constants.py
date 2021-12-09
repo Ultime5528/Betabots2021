@@ -22,6 +22,7 @@ class _Proprietes:
     pilotage_max_x = ntproperty("/Proprietes/PilotageMaxX", 0.4, writeDefault=False)
     pilotage_max_y = ntproperty("/Proprietes/PilotageMaxY", 0.4, writeDefault=False)
     pilotage_max_z = ntproperty("/Proprietes/PilotageMaxZ", 0.2, writeDefault=False)
+    pilotage_deadzone = ntproperty("/Proprietes/PilotageDeadzone", 0.05, writeDefault=False)
     aligner_max_speed = ntproperty("/Proprietes/AlignerMaxSpeed", 0.15, writeDefault=False)
     aligner_error_multiplier = ntproperty("/Proprietes/AlignerErrorMultiplier", 1.5, writeDefault=False)
     aller_max_speed = ntproperty("/Proprietes/AllerMaxSpeed", 0.05, writeDefault=False)
