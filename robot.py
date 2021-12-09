@@ -49,14 +49,26 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Commandes/Reset", Reset(self.troisdents))
         wpilib.SmartDashboard.putData("Commandes/DropReset", DropReset(self.troisdents))
 
+
+
+        self.autoChooser = wpilib.SendableChooser()
+        self.autoChooser.setDefaultOption("Rien", None)
+        self.autoChooser.addOption("Auto jaune", Hold(self.troisdents))
+        self.autoChooser.addOption("Auto Vert", Reset(self.troisdents))
+        wpilib.SmartDashboard.putData("ModeAutonome", self.autoChooser)
+
     def autonomousInit(self):
-        pass
+        self.autoCommand = self.autoChooser.getSelected()
+
+        if self.autoCommand != None :
+           self.autoCommand.schedule()
 
     def autonomousPeriodic(self):
         pass
 
     def teleopInit(self):
-        pass
+        if self.autoCommand != None :
+           self.autoCommand.cancel()
 
     def teleopPeriodic(self):
         pass
