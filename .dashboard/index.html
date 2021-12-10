@@ -34,9 +34,12 @@
 			<nt-number key="/Proprietes/Trois Dents/DropResetTime" value="1"></nt-number>
             <frc-number-field step="0.25" has-controls label="DropReturnTime" source-key="/Proprietes/Trois Dents/DropReturnTime"></frc-number-field>
             <frc-number-field step="0.01" has-controls label="Pilotage Dead Zone" source-key="/Proprietes/PilotageDeadzone"></frc-number-field>
-            <frc-number-field min="0" max="1" step="0.0.5" has-controls label="Pilotage max X (gauche droite)" source-key="/Proprietes/PilotageMaxX"></frc-number-field>
-            <frc-number-field min="0" max="1" step="0.0.5" has-controls label="Pilotage max Y (avant arrière)" source-key="/Proprietes/PilotageMaxY"></frc-number-field>
-            <frc-number-field min="0" max="1" step="0.0.5" has-controls label="Pilotage max Z (rotation)" source-key="/Proprietes/PilotageMaxZ"></frc-number-field>
+            <frc-number-field min="0" max="1" step="0.05" has-controls label="Pilotage max X (gauche droite)" source-key="/Proprietes/PilotageMaxX"></frc-number-field>
+            <frc-number-field min="0" max="1" step="0.05" has-controls label="Pilotage max Y (avant arrière)" source-key="/Proprietes/PilotageMaxY"></frc-number-field>
+            <frc-number-field min="0" max="1" step="0.05" has-controls label="Pilotage max Z (rotation)" source-key="/Proprietes/PilotageMaxZ"></frc-number-field>
+            <frc-number-field min="0" max="1" step="0.05" has-controls label="Aligner Max Speed" source-key="/Proprietes/AlignerMaxSpeed"></frc-number-field>
+            <frc-number-field min="0" max="1" step="0.05" has-controls label="Aligner Error Multiplier" source-key="/Proprietes/AlignerErrorMultiplier"></frc-number-field>
+            <frc-number-field min="0" max="1" step="0.05" has-controls label="Aller Max Speed" source-key="/Proprietes/AllerMaxSpeed"></frc-number-field>
             <frc-combo-box name="Mode de pilotage" default="joystick" options='["joystick", "xbox gachette rotation", "xbox gachette x", "xbox right stick rotation", "xbox right stick x"]' source-key="/Proprietes/ModePilotage"></frc-combo-box>
             <frc-combo-box name="Mode Auto" default="Rien" options='["Rien","Auto  Jaune", "Auto Vert"]' source-key="/SmartDashboard/ModeAutonome"></frc-combo-box>
         </div>

@@ -11,9 +11,9 @@ from wpimath.geometry import Rotation2d, Pose2d
 from wpimath.geometry import Translation2d
 from wpimath.kinematics import MecanumDriveOdometry, MecanumDriveWheelSpeeds, MecanumDriveKinematics
 
-import constants
+from constants import Ports, Proprietes
 from utils.sparkmaxsim import SparkMaxSim
-
+from utils.deadzone import linear_deadzone
 
 class BasePilotable(commands2.SubsystemBase):
     # TBD
@@ -26,10 +26,10 @@ class BasePilotable(commands2.SubsystemBase):
         self.x_wheelbase = 0.58 / 2
         self.y_wheelbase = 0.515 / 2
 
-        self.fl_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_fl, rev.MotorType.kBrushless)
-        self.fr_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_fr, rev.MotorType.kBrushless)
-        self.rl_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_rl, rev.MotorType.kBrushless)
-        self.rr_motor = rev.CANSparkMax(constants.Ports.base_pilotable_moteur_rr, rev.MotorType.kBrushless)
+        self.fl_motor = rev.CANSparkMax(Ports.base_pilotable_moteur_fl, rev.MotorType.kBrushless)
+        self.fr_motor = rev.CANSparkMax(Ports.base_pilotable_moteur_fr, rev.MotorType.kBrushless)
+        self.rl_motor = rev.CANSparkMax(Ports.base_pilotable_moteur_rl, rev.MotorType.kBrushless)
+        self.rr_motor = rev.CANSparkMax(Ports.base_pilotable_moteur_rr, rev.MotorType.kBrushless)
 
         for motor in [self.fl_motor, self.fr_motor, self.rl_motor, self.rr_motor]:
             motor.restoreFactoryDefaults()
@@ -50,8 +50,8 @@ class BasePilotable(commands2.SubsystemBase):
             self.gyro = navx.AHRS(wpilib.SerialPort.Port.kMXP)
             self.gyro.reset()
             self.gyro.calibrate()
-        else:
-            self.gyro = wpilib.ADXRS450_Gyro()
+        # else:
+        #     self.gyro = wpilib.ADXRS450_Gyro()
         
 
         self.drive = wpilib.drive.MecanumDrive(self.fl_motor, self.rl_motor, self.fr_motor, self.rr_motor)
@@ -81,10 +81,10 @@ class BasePilotable(commands2.SubsystemBase):
         self.resetOdometry()
 
     def driveCartesian(self, ySpeed: float, xSpeed: float, zRot: float) -> None:
-        self.drive.driveCartesian(ySpeed, xSpeed, zRot, 0.0)
+        self.drive.driveCartesian(linear_deadzone(ySpeed, Proprietes.pilotage_deadzone), linear_deadzone(xSpeed, Proprietes.pilotage_deadzone), linear_deadzone(zRot, Proprietes.pilotage_deadzone), 0.0)
 
     def drivePolar(self, mag: float, angle: float, zRot: float) -> None:
-        self.drive.drivePolar(mag, angle, zRot)
+        self.drive.drivePolar(linear_deadzone(mag, Proprietes.pilotage_deadzone), linear_deadzone(angle, Proprietes.pilotage_deadzone), linear_deadzone(zRot, Proprietes.pilotage_deadzone))
 
     def resetOdometry(self) -> None:
         self.fl_encoder.setPosition(0)
@@ -123,6 +123,12 @@ class BasePilotable(commands2.SubsystemBase):
         wpilib.SmartDashboard.putNumber("Odometry/X", pose.X())
         wpilib.SmartDashboard.putNumber("Odometry/Y", pose.Y())
         wpilib.SmartDashboard.putNumber("Odometry/Rotation", pose.rotation().degrees())
+        wpilib.SmartDashboard.putNumber("accelX", self.getAccelX())
+        wpilib.SmartDashboard.putNumber("accelY", self.getAccelY())
+        wpilib.SmartDashboard.putNumber("accelZ", self.getAccelZ())
+        wpilib.SmartDashboard.putNumber("velocity x", self.gyro.getVelocityX())
+        wpilib.SmartDashboard.putNumber("velocity y", self.gyro.getVelocityY())
+        wpilib.SmartDashboard.putBoolean("isMoving", self.isMoving())
 
     def drive_test(self, value: float):
         self.fl_motor.set(value)
@@ -148,3 +154,15 @@ class BasePilotable(commands2.SubsystemBase):
 
     def getAngle(self):
         return -math.remainder(self.gyro.getAngle(), 360.0)
+
+    def getAccelX(self):
+        return self.gyro.getWorldLinearAccelX()
+
+    def getAccelY(self):
+        return self.gyro.getWorldLinearAccelY()
+    
+    def getAccelZ(self):
+        return self.gyro.getWorldLinearAccelZ()
+    
+    def isMoving(self):
+        return self.gyro.isMoving()
