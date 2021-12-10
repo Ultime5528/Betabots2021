@@ -17,10 +17,10 @@ from subsystems.basepilotable import BasePilotable
 from subsystems.troisdents import TroisDents
 
 from commands2.button import JoystickButton
+from wpilib.drive import Vector2d
 
 
 class Robot(commands2.TimedCommandRobot):
-
     def robotInit(self):
         wpilib.CameraServer.launch('vision.py:main')
         self.base_pilotable = BasePilotable()
@@ -49,8 +49,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Commandes/DropReset", DropReset(self.troisdents))
         wpilib.SmartDashboard.putData("Commandes/AutoJaune", AutoJaune(self.troisdents, self.base_pilotable))
 
-
-
+        self.autoCommand: commands2.CommandBase = None
         self.autoChooser = wpilib.SendableChooser()
         self.autoChooser.setDefaultOption("Rien", None)
         self.autoChooser.addOption("Auto jaune", Hold(self.troisdents))
@@ -60,14 +59,15 @@ class Robot(commands2.TimedCommandRobot):
     def autonomousInit(self):
         self.autoCommand = self.autoChooser.getSelected()
 
-        if self.autoCommand != None :
+        if self.autoCommand:
            self.autoCommand.schedule()
 
     def autonomousPeriodic(self):
-        pass
+        vec = Vector2d(1.0, 1.0)
+        vec.rotate()
 
     def teleopInit(self):
-        if self.autoCommand != None :
+        if self.autoCommand:
            self.autoCommand.cancel()
 
     def teleopPeriodic(self):
