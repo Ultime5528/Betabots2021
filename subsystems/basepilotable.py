@@ -17,10 +17,6 @@ from utils.sparkmaxsim import SparkMaxSim
 # from utils.deadzone import linear_deadzone
 
 
-def linear_deadzone(value, deadzone):
-    return value
-
-
 class BasePilotable(commands2.SubsystemBase):
     # TBD
     pulses_per_meter = 16.68
@@ -60,7 +56,6 @@ class BasePilotable(commands2.SubsystemBase):
             self.gyro.calibrate()
         # else:
         #     self.gyro = wpilib.ADXRS450_Gyro()
-        
 
         self.drive = wpilib.drive.MecanumDrive(self.fl_motor, self.rl_motor, self.fr_motor, self.rr_motor)
         self.drive.setRightSideInverted(False)
@@ -89,10 +84,15 @@ class BasePilotable(commands2.SubsystemBase):
         self.resetOdometry()
 
     def driveCartesian(self, ySpeed: float, xSpeed: float, zRot: float) -> None:
-        self.drive.driveCartesian(linear_deadzone(ySpeed, Proprietes.pilotage_deadzone), linear_deadzone(xSpeed, Proprietes.pilotage_deadzone), linear_deadzone(zRot, Proprietes.pilotage_deadzone), 0.0)
+        self.drive.driveCartesian(ySpeed, xSpeed, zRot, 0.0)
+
+    def deadzoneDriveCartesian(self, ySpeed: float, xSpeed: float, zRot: float) -> None:
+        self.drive.driveCartesian(linear_deadzone(ySpeed, Proprietes.pilotage_deadzone),
+                                  linear_deadzone(xSpeed, Proprietes.pilotage_deadzone),
+                                  linear_deadzone(zRot, Proprietes.pilotage_deadzone), 0.0)
 
     def drivePolar(self, mag: float, angle: float, zRot: float) -> None:
-        self.drive.drivePolar(linear_deadzone(mag, Proprietes.pilotage_deadzone), linear_deadzone(angle, Proprietes.pilotage_deadzone), linear_deadzone(zRot, Proprietes.pilotage_deadzone))
+        self.drive.drivePolar(mag, angle, zRot)
 
     def resetOdometry(self) -> None:
         self.fl_encoder.setPosition(0)
@@ -175,6 +175,6 @@ class BasePilotable(commands2.SubsystemBase):
 
     def getAccelZ(self):
         return self.gyro.getWorldLinearAccelZ()
-    
+
     def isMoving(self):
         return self.gyro.isMoving()
