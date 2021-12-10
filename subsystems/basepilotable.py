@@ -10,10 +10,16 @@ from wpilib.simulation import SimDeviceSim
 from wpimath.geometry import Rotation2d, Pose2d
 from wpimath.geometry import Translation2d
 from wpimath.kinematics import MecanumDriveOdometry, MecanumDriveWheelSpeeds, MecanumDriveKinematics
+from wpilib.drive import Vector2d
 
 from constants import Ports, Proprietes
 from utils.sparkmaxsim import SparkMaxSim
-from utils.deadzone import linear_deadzone
+# from utils.deadzone import linear_deadzone
+
+
+def linear_deadzone(value, deadzone):
+    return value
+
 
 class BasePilotable(commands2.SubsystemBase):
     # TBD
@@ -41,6 +47,8 @@ class BasePilotable(commands2.SubsystemBase):
         self.fr_encoder = self.fr_motor.getEncoder()
         self.rl_encoder = self.rl_motor.getEncoder()
         self.rr_encoder = self.rr_motor.getEncoder()
+
+        self.accel = wpilib.BuiltInAccelerometer()
 
         for encoder in [self.fl_encoder, self.fr_encoder, self.rl_encoder, self.rr_encoder]:
             encoder.setPositionConversionFactor(1 / self.pulses_per_meter)
@@ -126,8 +134,6 @@ class BasePilotable(commands2.SubsystemBase):
         wpilib.SmartDashboard.putNumber("accelX", self.getAccelX())
         wpilib.SmartDashboard.putNumber("accelY", self.getAccelY())
         wpilib.SmartDashboard.putNumber("accelZ", self.getAccelZ())
-        wpilib.SmartDashboard.putNumber("velocity x", self.gyro.getVelocityX())
-        wpilib.SmartDashboard.putNumber("velocity y", self.gyro.getVelocityY())
         wpilib.SmartDashboard.putBoolean("isMoving", self.isMoving())
 
     def drive_test(self, value: float):
@@ -156,11 +162,17 @@ class BasePilotable(commands2.SubsystemBase):
         return -math.remainder(self.gyro.getAngle(), 360.0)
 
     def getAccelX(self):
-        return self.gyro.getWorldLinearAccelX()
+        # vec = Vector2d(self.gyro.getWorldLinearAccelX(), self.gyro.getWorldLinearAccelY())
+        # vec.rotate(-self.gyro.getYaw())
+        # return vec.x
+        return self.accel.getX()
 
     def getAccelY(self):
-        return self.gyro.getWorldLinearAccelY()
-    
+        # vec = Vector2d(self.gyro.getWorldLinearAccelX(), self.gyro.getWorldLinearAccelY())
+        # vec.rotate(-self.gyro.getYaw())
+        # return vec.y
+        return self.accel.getY()
+
     def getAccelZ(self):
         return self.gyro.getWorldLinearAccelZ()
     
