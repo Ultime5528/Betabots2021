@@ -6,7 +6,8 @@ import wpilib
 from commands.drop import Drop
 from commands.dropreset import DropReset
 from commands.hold import Hold
-from commands.autojaune import AutoJaune
+from commands.autogauche import AutoGauche
+from commands.autodroit import AutoDroit
 from commands.piloter import Piloter
 from commands.aligner_pyramide import AlignerPyramide
 from commands.aller_pyramide import AllerPyramide
@@ -37,7 +38,8 @@ class Robot(commands2.TimedCommandRobot):
         self.base_pilotable.setDefaultCommand(Piloter(self.base_pilotable, self.stick, self.xbox_controller))
         JoystickButton(self.stick, 3).whenPressed(AlignerPyramide(self.base_pilotable, 0.0))
         JoystickButton(self.stick, 4).whenPressed(AllerPyramide(self.base_pilotable, 0.0, 1000))
-        JoystickButton(self.stick, 5).whenPressed(AutoJaune(self.troisdents, self.base_pilotable))
+        JoystickButton(self.stick, 5).whenPressed(AutoGauche(self.troisdents, self.base_pilotable))
+        JoystickButton(self.stick, 6).whenPressed(AutoDroit(self.troisdents, self.base_pilotable))
 
         # wpilib.SmartDashboard.putData("AlignerPyramide", AlignerPyramide(self.base_pilotable, 1))
         # wpilib.SmartDashboard.putData("Commandes/Pyramide1", AlignerPyramide(self.base_pilotable, 1))
@@ -48,7 +50,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Commandes/Hold", Hold(self.troisdents))
         wpilib.SmartDashboard.putData("Commandes/Reset", Reset(self.troisdents))
         wpilib.SmartDashboard.putData("Commandes/DropReset", DropReset(self.troisdents))
-        wpilib.SmartDashboard.putData("Commandes/AutoJaune", AutoJaune(self.troisdents, self.base_pilotable))
+        wpilib.SmartDashboard.putData("Commandes/AutoGauche", AutoGau(self.troisdents, self.base_pilotable))
 
     def autonomousInit(self):
         pass

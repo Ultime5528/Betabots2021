@@ -12,7 +12,7 @@ from subsystems.troisdents import TroisDents
 from subsystems.basepilotable import BasePilotable
 
 
-class AutoJaune(commands2.SequentialCommandGroup):
+class AutoGauche(commands2.SequentialCommandGroup):
     def __init__(self, troisdent: TroisDents, base_pilotable: BasePilotable):
         super().__init__(
             commands2.ParallelDeadlineGroup(
