@@ -17,16 +17,24 @@ class SuivreTrajectoire(commands2.CommandBase):
         self.drive.resetOdometry()
 
     def execute(self) -> None:
-        twist = self.drive.odometry.getPose().log(self.end_position)
-        hypotenuse = math.hypot(twist.dx, twist.dy)
+        transform = self.end_position - self.drive.odometry.getPose()
+        x_speed = self.speed
+        y_speed = self.speed
         turn_speed = 0.1
-        if abs(twist.dtheta_degrees) <= 3:
+        dx = transform.X()
+        dy = transform.Y()
+        dtheta_degrees = transform.rotation().degrees()
+        if abs(dx) <= 0.1:
+            x_speed = 0.0
+        if abs(dy) <= 0.1:
+            y_speed = 0.0
+        if abs(dtheta_degrees) <= 3:
             turn_speed = 0.0
-        self.drive.driveCartesian(-self.speed * twist.dy / hypotenuse, self.speed * twist.dx / hypotenuse, math.copysign(turn_speed, -twist.dtheta_degrees))
+        self.drive.driveCartesian(math.copysign(y_speed, -dy), math.copysign(x_speed, dx), math.copysign(turn_speed, -dtheta_degrees))
 
     def isFinished(self) -> bool:
         distance = self.drive.odometry.getPose().translation().distance(self.end_position.translation())
-        return distance <= 0.1 and abs(self.drive.odometry.getPose().rotation().degrees() - self.end_position.rotation().degrees()) < 2
+        return distance <= 0.15 and abs(self.drive.odometry.getPose().rotation().degrees() - self.end_position.rotation().degrees()) < 2
 
     def end(self, interrupted: bool) -> None:
         self.drive.driveCartesian(0, 0, 0)
