@@ -21,7 +21,7 @@ class AlignerPyramide(CommandBase):
         self.error = float("inf")
 
     def execute(self):
-        self.error = self.norm_x.getDouble(0) - self.target_x
+        self.error = self.norm_x.getDouble(0) - self.target_x + Proprietes.aligner_offset
         output = Proprietes.aligner_error_multiplier * self.error
         if abs(output) > Proprietes.aligner_max_speed:
             output = (self.error / abs(self.error)) * Proprietes.aligner_max_speed
