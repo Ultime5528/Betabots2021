@@ -18,7 +18,6 @@ from subsystems.basepilotable import BasePilotable
 from subsystems.troisdents import TroisDents
 
 from commands2.button import JoystickButton
-from wpilib.drive import Vector2d
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -36,10 +35,10 @@ class Robot(commands2.TimedCommandRobot):
         JoystickButton(self.stick, 12).whenPressed(Drop(self.troisdents))
 
         self.base_pilotable.setDefaultCommand(Piloter(self.base_pilotable, self.stick, self.xbox_controller))
-        JoystickButton(self.stick, 3).whenPressed(AlignerPyramide(self.base_pilotable, 0.0))
-        JoystickButton(self.stick, 4).whenPressed(AllerPyramide(self.base_pilotable, 0.0, 1000))
-        JoystickButton(self.stick, 5).whenPressed(AutoGauche(self.troisdents, self.base_pilotable))
-        JoystickButton(self.stick, 6).whenPressed(AutoDroit(self.troisdents, self.base_pilotable))
+        JoystickButton(self.stick, 3).toggleWhenPressed(AlignerPyramide(self.base_pilotable, 0.0))
+        JoystickButton(self.stick, 4).toggleWhenPressed(AllerPyramide(self.base_pilotable, 0.0, 1000))
+        # JoystickButton(self.stick, 5).whenPressed(AutoGauche(self.troisdents, self.base_pilotable))
+        # JoystickButton(self.stick, 6).whenPressed(AutoDroit(self.troisdents, self.base_pilotable))
 
         # wpilib.SmartDashboard.putData("AlignerPyramide", AlignerPyramide(self.base_pilotable, 1))
         # wpilib.SmartDashboard.putData("Commandes/Pyramide1", AlignerPyramide(self.base_pilotable, 1))
@@ -50,13 +49,14 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Commandes/Hold", Hold(self.troisdents))
         wpilib.SmartDashboard.putData("Commandes/Reset", Reset(self.troisdents))
         wpilib.SmartDashboard.putData("Commandes/DropReset", DropReset(self.troisdents))
-        wpilib.SmartDashboard.putData("Commandes/AutoGauche", AutoGau(self.troisdents, self.base_pilotable))
+        wpilib.SmartDashboard.putData("Commandes/AutoGauche", AutoGauche(self.troisdents, self.base_pilotable))
+        wpilib.SmartDashboard.putData("Commandes/AutoDroit", AutoDroit(self.troisdents, self.base_pilotable))
 
         self.autoCommand: commands2.CommandBase = None
         self.autoChooser = wpilib.SendableChooser()
         self.autoChooser.setDefaultOption("Rien", None)
-        self.autoChooser.addOption("Auto jaune", Hold(self.troisdents))
-        self.autoChooser.addOption("Auto Vert", Reset(self.troisdents))
+        self.autoChooser.addOption("Auto gauche", AutoGauche(self.troisdents, self.base_pilotable))
+        self.autoChooser.addOption("Auto droit", AutoDroit(self.troisdents, self.base_pilotable))
         wpilib.SmartDashboard.putData("ModeAutonome", self.autoChooser)
 
     def autonomousInit(self):
@@ -66,8 +66,7 @@ class Robot(commands2.TimedCommandRobot):
            self.autoCommand.schedule()
 
     def autonomousPeriodic(self):
-        vec = Vector2d(1.0, 1.0)
-        vec.rotate()
+        pass
 
     def teleopInit(self):
         if self.autoCommand:

@@ -18,15 +18,15 @@ class AutoDroit(commands2.SequentialCommandGroup):
             commands2.ParallelDeadlineGroup(
                 commands2.SequentialCommandGroup(
                     commands2.WaitCommand(0.5),
-                    SpecificTurn(-90, base_pilotable, -0.15),
+                    SpecificTurn(-90, base_pilotable, 0.15),
                     SuivreTrajectoire(base_pilotable, Pose2d(4, -0.75, Rotation2d.fromDegrees(0)), 0.19),
-                    SpecificTurn(45, base_pilotable, 0.15),
+                    SpecificTurn(45, base_pilotable, -0.15),
                     AllerPyramide(base_pilotable, 0.0, 10),
                     AlignerPyramide(base_pilotable, 0.0),
                     AllerPyramide(base_pilotable, 0.0, 1),
-
                 ),
                 Hold(troisdent)
             ),
             DropReset(troisdent)
         )
+        self.setName("Auto droit")

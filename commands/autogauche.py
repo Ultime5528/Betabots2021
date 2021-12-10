@@ -30,3 +30,4 @@ class AutoGauche(commands2.SequentialCommandGroup):
             ),
             DropReset(troisdent)
         )
+        self.setName("Auto gauche")

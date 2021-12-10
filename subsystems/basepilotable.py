@@ -14,7 +14,7 @@ from wpilib.drive import Vector2d
 
 from constants import Ports, Proprietes
 from utils.sparkmaxsim import SparkMaxSim
-# from utils.deadzone import linear_deadzone
+from utils.deadzone import linear_deadzone
 
 
 class BasePilotable(commands2.SubsystemBase):
